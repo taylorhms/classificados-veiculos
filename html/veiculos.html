@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  
+  <!-- Option 1: Include in HTML -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+</head>
+<body>
+  <h1>Veiculos</h1>
+  <button id="btn-atualizar">Atualizar</button>
+  <table class="container" id="tabela-veiculos"></table>
+  
+  
+  
+  <script>
+	let consultarVeiculos = (url) => {
+	    $.ajax({
+			type: 'get',
+			url: url || 'http://localhost:8080/veiculos',
+			dataType: 'json',
+			contentType: 'application/json; charset=utf-8',
+			crossDomain: true,
+			success: (veiculos) => {
+				let veiculosStr = '<tr><th>Id</th><th>Nome cliente</th><th>Marca/Modelo</th><th>Ano</th><th>Valor</th><th>Publicação</th></tr>';
+				for (veiculo of veiculos) {
+				    veiculosStr +=
+							'<tr>' +
+								'<td>' + veiculo.id + '</td>' +
+								'<td>' + veiculo.nomeCliente + '</td>' +
+								'<td>' + veiculo.marcaModeloVeiculo + '</td>' +
+								'<td>' + veiculo.anoModelo + '</td>' +
+								'<td>' + veiculo.valorVenda + '</td>' + 
+								'<td>' + veiculo.dataPublicacao.toString() + '</td>' + 
+							'</tr>';
+				}
+				$('#tabela-veiculos').html(veiculosStr);
+			},
+			error: (erro) => {
+				window.alert("Ocorreu um erro: " + JSON.stringify(erro));
+			}
+		});
+	};
+	
+	
+	$('#btn-atualizar').click(() => {
+		consultarVeiculos();
+	});
+  </script>
+</body>
+</html>
